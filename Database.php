@@ -2,13 +2,10 @@
 
 namespace app;
 
-use PDO, Exception;
-
 $dns = "mysql:host=localhost";
 $username = 'root';
 $password = '';
 $database_name = 'super-blog';
-
 
 /**
  * where
@@ -17,7 +14,7 @@ trait where
 {
   public function where(string $key, string $value)
   {
-    $this->db_query .= " WHERE `$key` = '$value'";
+    $this->db_query .= " WHERE $key = '$value'";
 
     return $this;;
   }
@@ -25,6 +22,13 @@ trait where
   public function orWhere(string $key, string $value)
   {
     $this->db_query .= " OR `$key` = '$value'";
+
+    return $this;;
+  }
+
+  public function and(string $key, string $value)
+  {
+    $this->db_query .= " AND `$key` = '$value'";
 
     return $this;;
   }
@@ -70,45 +74,45 @@ trait join
   /** 
    * @param array $table_list [$key, $value]
    */
-  public function innerJoin(array $table_list)
+  public function innerJoin(string $table_name, array $table_list)
   {
     if (count($table_list) !== 2) {
-      throw new Exception('table list must be two items');
+      throw new \Exception('table list must be two items');
     }
 
-    $select_tables = "'{$table_list[0]}' = '{$table_list[1]}'";
+    $select_tables = "{$table_list[0]} = {$table_list[1]}";
 
-    $this->db_query .= " INNER JOIN `{$this->table_name}` ON " . $select_tables;
+    $this->db_query .= " INNER JOIN `{$table_name}` ON " . $select_tables;
     return $this;
   }
 
   /** 
    * @param array $table_list [$key, $value]
    */
-  public function leftJoin(array $table_list)
+  public function leftJoin(string $table_name, array $table_list)
   {
     if (count($table_list) !== 2) {
-      throw new Exception('table list must be two items');
+      throw new \Exception('table list must be two items');
     }
 
-    $select_tables = "'{$table_list[0]}' = '{$table_list[1]}'";
+    $select_tables = "{$table_list[0]} = {$table_list[1]}";
 
-    $this->db_query .= " LEFT JOIN `{$this->table_name}` ON " . $select_tables;
+    $this->db_query .= " LEFT JOIN `{$table_name}` ON " . $select_tables;
     return $this;
   }
 
   /** 
    * @param array $table_list [$key, $value]
    */
-  public function outerJoin(array $table_list)
+  public function outerJoin(string $table_name, array $table_list)
   {
     if (count($table_list) !== 2) {
-      throw new Exception('table list must be two items');
+      throw new \Exception('table list must be two items');
     }
 
-    $select_tables = "'{$table_list[0]}' = '{$table_list[1]}'";
+    $select_tables = "{$table_list[0]} = {$table_list[1]}";
 
-    $this->db_query .= " FULL OUTER JOIN `{$this->table_name}` ON " . $select_tables;
+    $this->db_query .= " FULL OUTER JOIN `{$table_name}` ON " . $select_tables;
     return $this;
   }
 }
@@ -145,17 +149,23 @@ class Database
   private $table_name;
   private $db_query;
 
+  public static $dns;
+  public static $username;
+  public static $password;
+  public static $database_name;
+
   public function __construct()
   {
-    global $dns, $username, $password, $database_name;
 
-    $this->conn = new PDO($dns, $username, $password, [
-      PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-      PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
+    $this->conn = new \PDO(self::$dns, self::$username, self::$password, [
+      \PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_ASSOC,
+      \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION
     ]);
 
+    $db_name = self::$database_name;
+
     // create database
-    $this->conn->exec("CREATE DATABASE IF NOT EXISTS `$database_name`; USE `$database_name`");
+    $this->conn->exec("CREATE DATABASE IF NOT EXISTS `$db_name`; USE `$db_name`");
   }
 
   public function createTable(string $table_name, array $table_data)
@@ -167,10 +177,10 @@ class Database
     }
 
     $this->db_query = "CREATE TABLE IF NOT EXISTS `$table_name` ( 
-          `id` INT NOT NULL AUTO_INCREMENT ,
+          `{$table_name}ID` INT NOT NULL AUTO_INCREMENT ,
           $table_columns
           `is_active` INT DEFAULT 1 ,
-          PRIMARY KEY (`id`));
+          PRIMARY KEY (`{$table_name}ID`));
     )";
     $this->run();
 
@@ -192,7 +202,8 @@ class Database
       $columns_name = "";
 
       foreach ($table_columns as $column) {
-        $columns_name .= "'$column' ,";
+        $columns_name .= "$column ,";
+        // $columns_name .= "`$column` ,";
       }
 
       // remove last comma
@@ -282,3 +293,8 @@ class Database
     return $this->db_query;
   }
 }
+
+Database::$dns = $dns;
+Database::$username = $username;
+Database::$password = $password;
+Database::$database_name = $database_name;

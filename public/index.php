@@ -1,14 +1,25 @@
 <?php
 
-use app\controllers\PostController;
+use app\controllers\AuthController;
+use app\controllers\DashboardController;
+use app\controllers\HomeController;
 use app\Router;
+
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
 $router = new Router();
 
-$router->get('/', [PostController::class, 'index']);
-$router->get('/posts', [PostController::class, 'posts']);
-$router->get('/categories', [PostController::class, 'categories']);
+$router->get('/', [HomeController::class, 'index']);
+$router->get('/post', [HomeController::class, 'show']);
+$router->post('/post/delete', [HomeController::class, 'delete']);
+
+$router->get('/post/add', [HomeController::class, 'addPage']);
+$router->post('/post/add', [HomeController::class, 'add']);
+
+$router->get('/login', [AuthController::class, 'login']);
+$router->post('/login', [AuthController::class, 'register']);
+
+$router->get('/dashboard', [DashboardController::class, 'index']);
 
 $router->resolve();

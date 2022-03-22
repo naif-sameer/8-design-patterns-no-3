@@ -20,3 +20,9 @@
     </div>
   </div>
 </div>
+
+<style>
+  body {
+    background-color: #fff !important;
+  }
+</style>

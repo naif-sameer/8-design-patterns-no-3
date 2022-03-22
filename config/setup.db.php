@@ -1,7 +1,7 @@
 <?php
 
 
-require __DIR__ . ('/../models/Database.php');
+require __DIR__ . ('/../Database.php');
 
 
 $db = new \app\Database();
@@ -35,9 +35,9 @@ $db->createTable("users", [
 // add foreign key :)
 $db->query("ALTER TABLE `posts`
     ADD CONSTRAINT `fk_author_post` FOREIGN KEY IF NOT EXISTS (`author_id`)
-      REFERENCES `users` (`id`),
+      REFERENCES `users` (`usersID`),
 
     ADD CONSTRAINT `fk_category_post` FOREIGN KEY IF NOT EXISTS (`category_id`)
-      REFERENCES `categories` (`id`);
+      REFERENCES `categories` (`categoriesID`);
     COMMIT;
 ");

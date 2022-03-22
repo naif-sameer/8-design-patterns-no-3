@@ -1,6 +1,5 @@
 <?php
 
-
 namespace app;
 
 
@@ -47,7 +46,6 @@ class Router
             exit;
         }
 
-
         echo call_user_func($fn, $this);
     }
 
@@ -61,5 +59,10 @@ class Router
 
         // footer section
         include __DIR__ . "/views/includes/footer.php";
+    }
+
+    public static function redirect(string $redirect_url)
+    {
+        header("Location: $redirect_url");
     }
 }

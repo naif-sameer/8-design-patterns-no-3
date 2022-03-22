@@ -1,11 +1,12 @@
 <?php
-require __DIR__ . ('/../models/Database.php');
+
+
+require __DIR__ . ('/../Database.php');
 
 
 $db = new \app\Database();
 
 // insert fake data 👀
-
 // users
 $db
   ->table("users")
@@ -51,3 +52,6 @@ $db
     "created_at" => date('Y-m-d'),
   ])
   ->run();
+
+
+echo "done";
