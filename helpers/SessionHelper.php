@@ -43,6 +43,7 @@ class SessionHelper
 
   public static function rest_session()
   {
-    session_reset();
+    $_SERVER[self::$auth] = false;
+    $_SERVER[self::$userID] = null;
   }
 }

@@ -22,6 +22,7 @@ $router->post('/post/edit', [HomeController::class, 'edit']);
 
 $router->get('/login', [AuthController::class, 'login']);
 $router->post('/login', [AuthController::class, 'register']);
+$router->get('/logout', [AuthController::class, 'logout']);
 
 $router->get('/dashboard', [DashboardController::class, 'index']);
 

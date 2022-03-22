@@ -2,6 +2,9 @@
 
 namespace app\controllers;
 
+use app\helpers\SessionHelper;
+
+SessionHelper::run_session();
 
 use app\helpers\UtilHelper;
 use app\helpers\ValidateHelper;
@@ -42,5 +45,13 @@ class AuthController
         ]);
       }
     }
+  }
+
+  public function logout()
+  {
+    // SessionHelper::rest_session();
+    session_destroy();
+
+    Router::redirect('/login');
   }
 }
