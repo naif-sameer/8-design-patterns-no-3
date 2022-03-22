@@ -51,6 +51,17 @@ class Post extends Models
             ])->where("posts.postsID", $id)->get();
     }
 
+    public static function getPostByID($id)
+    {
+        return self::table("posts")
+            ->select(
+                "postsID",
+                "title",
+                "image",
+                "content"
+            )->where("postsID", $id)->get();
+    }
+
     public static function addPost(
         string $title,
         string $image,
@@ -65,6 +76,21 @@ class Post extends Models
             "author_id" => $author_id,
             "category_id" => $category_id
         ])->run();
+    }
+
+    public static function editPost(
+        string $postID,
+        string $title,
+        // string $image,
+        string $content,
+        string $category_id
+    ) {
+        return self::table("posts")->update([
+            "title" => $title,
+            // "image" => $image,
+            "content" => $content,
+            "category_id" => $category_id
+        ])->where("postsID", $postID)->run();
     }
 
     public static function deletePost($id)

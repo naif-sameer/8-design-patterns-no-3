@@ -17,6 +17,9 @@ $router->post('/post/delete', [HomeController::class, 'delete']);
 $router->get('/post/add', [HomeController::class, 'addPage']);
 $router->post('/post/add', [HomeController::class, 'add']);
 
+$router->get('/post/edit', [HomeController::class, 'editPage']);
+$router->post('/post/edit', [HomeController::class, 'edit']);
+
 $router->get('/login', [AuthController::class, 'login']);
 $router->post('/login', [AuthController::class, 'register']);
 

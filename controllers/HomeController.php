@@ -43,8 +43,6 @@ class HomeController
 
     public function add(Router $router)
     {
-
-
         if (isset($_FILES['image'])) {
             $uploaded_image = $_FILES['image'];
 
@@ -61,6 +59,48 @@ class HomeController
             if ($data) {
                 Router::redirect('/dashboard');
             }
+        }
+
+        // if ($data) $router->render('post', $data);
+
+        // else $router->render('404');
+    }
+
+    public function editPage(Router $router)
+    {
+        if (isset($_GET['id'])) {
+            $postData = Post::getPostByID($_GET['id']);
+
+            // UtilHelper::log($postData);
+
+            $router->render('edit-post', $postData);
+        }
+    }
+
+    public function edit(Router $router)
+    {
+
+        // if (isset($_FILES['image'])) {
+        //     $uploaded_image = $_FILES['image'];
+
+        //     $image = UtilHelper::uploadImage($uploaded_image);
+        // }
+
+        $postID = $_POST['postID'];
+        $title = $_POST['title'];
+        $content = $_POST['content'];
+        $category_id = $_POST['category_id'];
+
+        $data = Post::editPost(
+            $postID,
+            $title,
+
+            $content,
+            $category_id
+        );
+
+        if ($data) {
+            Router::redirect('/dashboard');
         }
 
         // if ($data) $router->render('post', $data);
