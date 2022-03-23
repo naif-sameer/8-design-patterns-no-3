@@ -63,8 +63,6 @@ class Post extends Models
 
     public static function getPostByID($id)
     {
-
-
         return self::table("posts")
             ->select(
                 "postsID",
