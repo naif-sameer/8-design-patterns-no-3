@@ -19,12 +19,12 @@ class AuthController
 {
   public static $isLogin = false;
 
-  public function login(Router $router)
+  public function login()
   {
-    $router->render('login');
+    Router::render('login');
   }
 
-  public function register(Router $router)
+  public function store()
   {
     $email = $_POST['email'];
     $password = $_POST['password'];
@@ -38,7 +38,7 @@ class AuthController
       if (Auth::login($email, $password)) {
         Router::redirect("/dashboard");
       } else {
-        $router->render('login', [
+        Router::render('login', [
           "email" => $email,
           "password" => $password,
           "error" => "Email or password is wrong"
@@ -49,7 +49,6 @@ class AuthController
 
   public function logout()
   {
-    // SessionHelper::rest_session();
     session_destroy();
 
     Router::redirect('/login');
