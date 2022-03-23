@@ -2,9 +2,9 @@
 
 namespace app\models;
 
-if (!isset($_SESSION)) {
-  session_start();
-}
+use app\helpers\SessionHelper;
+
+SessionHelper::run_session();
 
 use app\Database;
 use app\helpers\UtilHelper;
@@ -13,9 +13,8 @@ use app\helpers\UtilHelper;
  * Auth
  * @package app\models
  */
-class Auth extends Models
+class Auth extends Model
 {
-
   public static function login($email, $password)
   {
     $user_data  = self::table('users')
@@ -25,13 +24,11 @@ class Auth extends Models
       ->get();
 
     if ($user_data) {
-      $_SESSION['auth'] = true;
-      $_SESSION['userID'] = $user_data['usersID'];
+      SessionHelper::setSession(SessionHelper::$AUTH, true);
+      SessionHelper::setSession(SessionHelper::$USER_ID, $user_data['usersID']);
       return true;
     }
 
     return false;
-
-    // UtilHelper::log($isUser, $email, $password);
   }
 }
