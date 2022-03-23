@@ -26,7 +26,7 @@ yarn fake-data
   npm run php
 ```
 
-## Project role follow it pro :)
+## Project role follow it bro :)
 
 ### controller methods should be static
 
