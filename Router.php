@@ -12,12 +12,12 @@ class Router
     private static array $getRoutes = [];
     private static array $postRoutes = [];
 
-    public function get($url, $fn)
+    public static function get($url, $fn)
     {
         self::$getRoutes[$url] = $fn;
     }
 
-    public function post($url, $fn)
+    public static function post($url, $fn)
     {
         self::$postRoutes[$url] = $fn;
     }
@@ -41,12 +41,11 @@ class Router
 
         // 404
         if (!$fn) {
-            // echo 'Page not found';
             self::render("404");
             exit;
         }
 
-        echo call_user_func($fn);
+        call_user_func($fn);
     }
 
     public static function render(string $view, array $params = [])

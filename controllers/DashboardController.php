@@ -16,7 +16,7 @@ use app\Router;
  */
 class DashboardController
 {
-  public function index()
+  public static function index()
   {
     if (SessionHelper::getSession(SessionHelper::$AUTH)) {
       Router::render('dashboard');

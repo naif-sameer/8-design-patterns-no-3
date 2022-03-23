@@ -11,7 +11,7 @@ use app\Router;
  */
 class HomeController
 {
-    public function index()
+    public static function index()
     {
         Router::render('index');
     }
