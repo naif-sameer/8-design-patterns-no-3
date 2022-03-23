@@ -2,15 +2,6 @@
 
 namespace app\helpers;
 
-function strStart($str, $param)
-{
-  $isStart = false;
-
-  for ($i = 0; $i < strlen($str); $i++) {
-    echo $str[$i];
-    echo '--------';
-  }
-}
 class ValidateHelper
 {
 
@@ -18,53 +9,42 @@ class ValidateHelper
    */
   private static array $validation_errors = [];
 
-  /** Email pattern
-   */
-  private static $emailPattern = '/[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+[.]+[a-z-A-Z]/';
-
-
-  /** start with
-   * @param string param 
-   */
-  private static function amountSeparator(string $param): array
-  {
-    return explode(":", $param);
-  }
-
   /** validate
-   * @param array param [$key => $value]
+   * @param array request [$key => $value]
+   * @param array roles [$key => $value]
    * @return true|array true if validation successfully or error list
    * @example => validate(["name" => "required|min:30"])
    */
-  public static function validate(array $request, array $validation_pattern)
+  public static function validate(array $request, array $roles)
   {
-    foreach ($validation_pattern as $v_key => $v_value) {
-      $patterns =  explode("|", $v_value);
+    foreach ($roles as $role_key => $role_value) {
+      $patterns =  explode("|", $role_value);
 
       // required checking
       if (in_array('required', $patterns)) {
-        self::required($request, $v_key);
+        self::required($request, $role_key);
       }
 
       // required checking
       if (in_array('email', $patterns)) {
-        self::email($request, $v_key);
+        self::email($request, $role_key);
       }
 
 
       // min and max checking
-      foreach ($patterns as $key) {
+      foreach ($patterns as $pattern_key) {
 
         // min value checking
-        if (str_contains($key, 'min')) {
-          $amountSeparator = explode(":", $key);
-          self::min($request, $v_key, end($amountSeparator));
+        if (str_contains($pattern_key, 'min')) {
+          var_dump($pattern_key);
+          $amountSeparator = explode(":", $pattern_key);
+          self::min($request, $role_key, end($amountSeparator));
         }
 
         // max value checking
-        if (str_contains($key, 'max')) {
-          $amountSeparator = explode(":", $key);
-          self::max($request, $v_key, end($amountSeparator));
+        if (str_contains($pattern_key, 'max')) {
+          $amountSeparator = explode(":", $pattern_key);
+          self::max($request, $role_key, end($amountSeparator));
         }
       }
     }
@@ -77,13 +57,13 @@ class ValidateHelper
    * @param array request
    * @param string key
    */
-  private static function required(array $request, string $key)
+  private static function required(array $request, string $role_key)
   {
-    $isKeySet = isset($request[$key]);
-    $isValueEmpty = empty($request[$key]);
+    $isKeySet = isset($request[$role_key]);
+    $isValueEmpty = empty($request[$role_key]);
 
     if (!$isKeySet || $isValueEmpty) {
-      self::$validation_errors[] = "$key is required";
+      self::$validation_errors[] = "$role_key is required";
     }
   }
 
@@ -91,13 +71,13 @@ class ValidateHelper
    * @param array request
    * @param string key
    */
-  private static function email(array $request, string $key)
+  private static function email(array $request, string $role_key)
   {
-    $isKeySet = isset($request[$key]);
+    $isKeySet = isset($request[$role_key]);
 
     if ($isKeySet) {
-      if (!filter_var($request[$key], FILTER_VALIDATE_EMAIL)) {
-        self::$validation_errors[] = "{$request[$key]} is not a valid email";
+      if (!filter_var($request[$role_key], FILTER_VALIDATE_EMAIL)) {
+        self::$validation_errors[] = "'{$request[$role_key]}'  is not a valid email";
       }
     }
   }
@@ -107,15 +87,15 @@ class ValidateHelper
    * @param string key
    * @param string len
    */
-  private static function min(array $request, string $key, string $len)
+  private static function min(array $request, string $role_key, string $len)
   {
-    $isKeySet = isset($request[$key]);
+    $isKeySet = isset($request[$role_key]);
 
     if ($isKeySet) {
-      $isLower = strlen($request[$key]) < intval($len);
+      $isLower = strlen($request[$role_key]) < intval($len);
 
       if ($isLower) {
-        self::$validation_errors[] = "$key is must be upper than $len";
+        self::$validation_errors[] = "$role_key is must be upper than $len";
       }
     }
   }
@@ -125,15 +105,15 @@ class ValidateHelper
    * @param string key
    * @param string len
    */
-  private static function max(array $request, string $key, string $len)
+  private static function max(array $request, string $role_key, string $len)
   {
-    $isKeySet = isset($request[$key]);
+    $isKeySet = isset($request[$role_key]);
 
     if ($isKeySet) {
-      $isUpper = strlen($request[$key]) > intval($len);
+      $isUpper = strlen($request[$role_key]) > intval($len);
 
       if ($isUpper) {
-        self::$validation_errors[] = "$key is must be lower than $len";
+        self::$validation_errors[] = "$role_key is must be lower than $len";
       }
     }
   }
@@ -141,7 +121,7 @@ class ValidateHelper
 
 // var_dump(
 //   ValidateHelper::validate(
-//     ["title" => "Hi there", 'name' => 'naif @gmail.com', "a" => 20],
-//     ["title" => "required|min:3", "name" => "required|email", 'a' => 'required']
+//     ["title" => "Hi there", 'email' => 'naif@gmail.com', "a" => 20, "gender" => "male"],
+//     ["title" => "required|min:3|max:30", "email" => "required|email|min:100", 'a' => 'required']
 //   )
 // );
