@@ -13,35 +13,35 @@ use app\Router;
 class HomeController
 {
 
-    public function index(Router $router)
+    public static function index()
     {
         // get posts
         $posts = Post::getPosts();
 
-        $router->render('index', $posts);
+        Router::render('index', $posts);
     }
 
-    public function show(Router $router)
+    public static function show()
     {
         if (isset($_GET['id'])) {
             $id = $_GET['id'];
 
             $data = Post::getPost($id);
 
-            if ($data) $router->render('post', $data);
+            if ($data) Router::render('post', $data);
 
-            else $router->render('404');
+            else Router::render('404');
         } else {
-            $router->render('404');
+            Router::render('404');
         }
     }
 
-    public function addPage(Router $router)
+    public static function addPage()
     {
-        $router->render('add-post');
+        Router::render('add-post');
     }
 
-    public function add(Router $router)
+    public static function add()
     {
         if (isset($_FILES['image'])) {
             $uploaded_image = $_FILES['image'];
@@ -62,18 +62,18 @@ class HomeController
         }
     }
 
-    public function editPage(Router $router)
+    public static function editPage()
     {
         if (isset($_GET['id'])) {
             $postData = Post::getPostByID($_GET['id']);
 
             // UtilHelper::log($postData);
 
-            $router->render('edit-post', $postData);
+            Router::render('edit-post', $postData);
         }
     }
 
-    public function edit(Router $router)
+    public static function edit()
     {
 
         // if (isset($_FILES['image'])) {
@@ -90,7 +90,6 @@ class HomeController
         $data = Post::editPost(
             $postID,
             $title,
-
             $content,
             $category_id
         );
@@ -99,12 +98,12 @@ class HomeController
             Router::redirect('/dashboard');
         }
 
-        // if ($data) $router->render('post', $data);
+        // if ($data) Router::render('post', $data);
 
-        // else $router->render('404');
+        // else Router::render('404');
     }
 
-    public function delete(Router $router)
+    public static function delete()
     {
         if (isset($_POST['postID'])) {
             $id = $_POST['postID'];
@@ -115,7 +114,7 @@ class HomeController
                 Router::redirect('/dashboard');
             }
         } else {
-            $router->render('404');
+            Router::render('404');
         }
     }
 }
