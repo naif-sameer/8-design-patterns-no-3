@@ -36,7 +36,6 @@ class ValidateHelper
 
         // min value checking
         if (str_contains($pattern_key, 'min')) {
-          var_dump($pattern_key);
           $amountSeparator = explode(":", $pattern_key);
           self::min($request, $role_key, end($amountSeparator));
         }
