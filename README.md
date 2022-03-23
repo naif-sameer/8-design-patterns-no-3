@@ -1,6 +1,6 @@
-# hello everyone 😎
+# E Library project (php 8 and mvc);
 
-## create the database and tables run this
+## commands to create the database and tables run this
 
 ```bash
 npm run db
@@ -27,6 +27,10 @@ yarn fake-data
 ```
 
 ## Project role follow it pro :)
+
+### controller methods should be static
+
+Becurse the behavior behind Router::resolve();
 
 ### name
 
