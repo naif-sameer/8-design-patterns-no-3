@@ -5,7 +5,7 @@ namespace app;
 $dns = "mysql:host=localhost";
 $username = 'root';
 $password = '';
-$database_name = 'super-blog';
+$database_name = 'e-library';
 
 /**
  * where
@@ -158,7 +158,9 @@ class Database
   public static $password;
   public static $database_name;
 
-  public function __construct()
+  public static $instance;
+
+  private function __construct()
   {
 
     $this->conn = new \PDO(self::$dns, self::$username, self::$password, [
@@ -170,6 +172,15 @@ class Database
 
     // create database
     $this->conn->exec("CREATE DATABASE IF NOT EXISTS `$db_name`; USE `$db_name`");
+  }
+
+  public static function getInstance()
+  {
+    if (self::$instance == null) {
+      self::$instance = new Database();
+    }
+
+    return self::$instance;
   }
 
   public function createTable(string $table_name, array $table_data)
@@ -191,7 +202,7 @@ class Database
     return $this;
   }
 
-  public function table(string $table_name)
+  public function setTable(string $table_name)
   {
     $this->table_name = $table_name;
 
