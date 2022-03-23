@@ -17,7 +17,7 @@
 
         use app\helpers\SessionHelper;
 
-        if (SessionHelper::get_auth()) { ?>
+        if (SessionHelper::getSession(SessionHelper::$AUTH)) { ?>
 
           <a class="my-1 text-sm font-medium text-gray-700 transition-colors duration-200 transform dark:text-gray-200 hover:text-blue-500 dark:hover:text-blue-400 md:mx-4 md:my-0" href="/logout">Logout</a>
 
