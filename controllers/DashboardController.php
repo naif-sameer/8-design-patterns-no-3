@@ -16,14 +16,10 @@ use app\Router;
  */
 class DashboardController
 {
-  public function index(Router $router)
+  public function index()
   {
-    if (SessionHelper::get_auth()) {
-      $data = Post::getPosts();
-
-      // UtilHelper::log($data);
-
-      $router->render('dashboard', $data);
+    if (SessionHelper::getSession(SessionHelper::$AUTH)) {
+      Router::render('dashboard');
     } else {
       Router::redirect("/login");
     }

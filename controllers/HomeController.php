@@ -3,7 +3,6 @@
 namespace app\controllers;
 
 use app\helpers\UtilHelper;
-use app\models\Post;
 use app\Router;
 
 /**
@@ -12,110 +11,8 @@ use app\Router;
  */
 class HomeController
 {
-
-    public function index(Router $router)
+    public function index()
     {
-        // get posts
-        $posts = Post::getPosts();
-
-        $router->render('index', $posts);
-    }
-
-    public function show(Router $router)
-    {
-        if (isset($_GET['id'])) {
-            $id = $_GET['id'];
-
-            $data = Post::getPost($id);
-
-            if ($data) $router->render('post', $data);
-
-            else $router->render('404');
-        } else {
-            $router->render('404');
-        }
-    }
-
-    public function addPage(Router $router)
-    {
-        $router->render('add-post');
-    }
-
-    public function add(Router $router)
-    {
-        if (isset($_FILES['image'])) {
-            $uploaded_image = $_FILES['image'];
-
-            $image = UtilHelper::uploadImage($uploaded_image);
-
-            $title = $_POST['title'];
-            $content = $_POST['content'];
-            $author_id = $_POST['author_id'];
-            $category_id = $_POST['category_id'];
-
-            $data = Post::addPost($title, $image, $content, $author_id, $category_id);
-
-
-            if ($data) {
-                Router::redirect('/dashboard');
-            }
-        }
-    }
-
-    public function editPage(Router $router)
-    {
-        if (isset($_GET['id'])) {
-            $postData = Post::getPostByID($_GET['id']);
-
-            // UtilHelper::log($postData);
-
-            $router->render('edit-post', $postData);
-        }
-    }
-
-    public function edit(Router $router)
-    {
-
-        // if (isset($_FILES['image'])) {
-        //     $uploaded_image = $_FILES['image'];
-
-        //     $image = UtilHelper::uploadImage($uploaded_image);
-        // }
-
-        $postID = $_POST['postID'];
-        $title = $_POST['title'];
-        $content = $_POST['content'];
-        $category_id = $_POST['category_id'];
-
-        $data = Post::editPost(
-            $postID,
-            $title,
-
-            $content,
-            $category_id
-        );
-
-        if ($data) {
-            Router::redirect('/dashboard');
-        }
-
-        // if ($data) $router->render('post', $data);
-
-        // else $router->render('404');
-    }
-
-    public function delete(Router $router)
-    {
-        if (isset($_POST['postID'])) {
-            $id = $_POST['postID'];
-
-            $isDelete = Post::deletePost($id);
-
-            if ($isDelete) {
-                Router::redirect('/dashboard');
-            }
-        } else {
-            $router->render('404');
-        }
+        Router::render('index');
     }
 }
