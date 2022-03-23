@@ -2,10 +2,11 @@
 
 namespace app\helpers;
 
+
 class SessionHelper
 {
-  private static $auth = 'auth';
-  private static $userID = 'userID';
+  public static $AUTH = 'auth';
+  public static $USER_ID = 'userID';
 
   private function __construct()
   {
@@ -18,32 +19,19 @@ class SessionHelper
     }
   }
 
-  public static function get_auth()
+  public static function getSession(string $key)
   {
-    return isset($_SESSION['auth']) ? $_SESSION['auth'] : null;
+    return $_SESSION[$key] ?? false;
   }
 
-  public static function set_auth()
+  public static function setSession(string $key, $value)
   {
-    return $_SESSION[self::$auth] = true;
+    return $_SESSION[$key] = $value;
   }
 
-  public static function get_userID()
-  {
-    return $_SESSION[self::$userID];
-  }
-
-  /** set user id
-   * @param string $userID
-   */
-  public static function set_userID(string $userID)
-  {
-    $_SESSION[self::$userID] = $userID;
-  }
-
-  public static function rest_session()
-  {
-    $_SERVER[self::$auth] = false;
-    $_SERVER[self::$userID] = null;
-  }
+  // public static function rest_session()
+  // {
+  //   $_SERVER[self::$auth] = false;
+  //   $_SERVER[self::$userID] = null;
+  // }
 }
