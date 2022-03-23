@@ -39,20 +39,32 @@ class Post extends Models
 
     public static function getPost($id)
     {
-        return self::table("posts")
+        $postData = self::table("posts")
             ->select(
-                "posts.postsID",
-                "posts.title",
-                "posts.image",
-                "posts.content",
-                "categories.name  AS category"
-            )->innerJoin("categories", [
-                "posts.postsID", "categories.categoriesID"
-            ])->where("posts.postsID", $id)->get();
+                "postsID",
+                "title",
+                "image",
+                "content",
+                "category_id"
+            )
+            ->where('postsID', $id)
+            ->get();
+
+        $categoryID = $postData['category_id'];
+        $category = self::table("categories")
+            ->select('name AS category')
+            ->where("categoriesID", $categoryID)
+            ->get();
+
+        $postData['category'] = $category['category'];
+
+        return $postData;
     }
 
     public static function getPostByID($id)
     {
+
+
         return self::table("posts")
             ->select(
                 "postsID",

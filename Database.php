@@ -44,6 +44,8 @@ trait runQuery
     $statement = $this->conn->prepare($this->db_query);
     $statement->execute();
 
+    $this->db_query = "";
+
     return $statement->fetch();
   }
 
@@ -51,6 +53,8 @@ trait runQuery
   {
     $statement = $this->conn->prepare($this->db_query);
     $statement->execute();
+
+    $this->db_query = "";
 
     return $statement->fetchAll();
   }

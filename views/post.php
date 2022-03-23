@@ -1,10 +1,11 @@
-<?php include "../views/includes/nav.php"; ?>
+<?php
+
+use app\helpers\UtilHelper;
+
+include "../views/includes/nav.php"; ?>
 
 <?php
-// echo
-// "<pre>";
-// var_dump($params);
-// echo "</pre>";
+// UtilHelper::log($params);
 // exit;
 
 $fb_link = "http://www.facebook.com/sharer.php?u=http://localhost:8000/post?id={$params["postsID"]}";

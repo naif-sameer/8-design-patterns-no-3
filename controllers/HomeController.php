@@ -60,10 +60,6 @@ class HomeController
                 Router::redirect('/dashboard');
             }
         }
-
-        // if ($data) $router->render('post', $data);
-
-        // else $router->render('404');
     }
 
     public function editPage(Router $router)

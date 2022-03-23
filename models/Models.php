@@ -11,11 +11,9 @@ class Models
   public static function table(string $table_name): Database
   {
     if (!self::$db) {
-      $db = new Database();
-
-      self::$db = $db->table($table_name);
+      self::$db = new Database();
     }
 
-    return self::$db;
+    return self::$db->table($table_name);
   }
 }
