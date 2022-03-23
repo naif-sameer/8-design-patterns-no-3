@@ -12,6 +12,14 @@ if (isset($params['email']) && isset($params['password'])) {
   $password = $params['password'];
 }
 
+$errors = [];
+
+if (isset($params['error'])) {
+  $errors = $params['error'];
+}
+
+$isError = !empty($errors);
+
 // UtilHelper::log($params);
 ?>
 
@@ -22,7 +30,7 @@ if (isset($params['email']) && isset($params['password'])) {
   <!-- alert -->
   <?php
 
-  if (isset($params['error'])) {  ?>
+  if ($isError) {  ?>
 
     <div class="flex my-8 w-full overflow-hidden bg-white rounded-lg shadow-md dark:bg-gray-800">
       <div class="flex items-center justify-center w-12 bg-red-500">
@@ -34,9 +42,21 @@ if (isset($params['email']) && isset($params['password'])) {
       <div class="px-4 py-2 -mx-3">
         <div class="mx-3">
           <span class="font-semibold text-red-500 dark:text-red-400">Error</span>
-          <p class="text-sm text-gray-600 dark:text-gray-200">
-            <?php echo $params['error']; ?>
-          </p>
+
+
+          <?php
+          if (is_array($errors)) {
+            foreach ($errors as $key) { ?>
+              <p class="text-sm text-gray-600 dark:text-gray-200">
+                <?php echo $key; ?>
+              </p>
+            <?php }
+          } else { ?>
+            <p class="text-sm text-gray-600 dark:text-gray-200">
+              <?php echo $errors; ?>
+            </p>
+          <?php } ?>
+
         </div>
       </div>
     </div>
