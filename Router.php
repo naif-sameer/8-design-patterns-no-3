@@ -9,20 +9,20 @@ namespace app;
  */
 class Router
 {
-    public array $getRoutes = [];
-    public array $postRoutes = [];
+    private static array $getRoutes = [];
+    private static array $postRoutes = [];
 
     public function get($url, $fn)
     {
-        $this->getRoutes[$url] = $fn;
+        self::$getRoutes[$url] = $fn;
     }
 
     public function post($url, $fn)
     {
-        $this->postRoutes[$url] = $fn;
+        self::$postRoutes[$url] = $fn;
     }
 
-    public function resolve()
+    public static function resolve()
     {
         $method = strtolower($_SERVER['REQUEST_METHOD']);
 
@@ -34,22 +34,22 @@ class Router
         }
 
         if ($method === 'get') {
-            $fn = $this->getRoutes[$url] ?? null;
+            $fn = self::$getRoutes[$url] ?? null;
         } else {
-            $fn = $this->postRoutes[$url] ?? null;
+            $fn = self::$postRoutes[$url] ?? null;
         }
 
         // 404
         if (!$fn) {
             // echo 'Page not found';
-            $this->render("404");
+            self::render("404");
             exit;
         }
 
-        echo call_user_func($fn, $this);
+        echo call_user_func($fn);
     }
 
-    public function render(string $view, array $params = [])
+    public static function render(string $view, array $params = [])
     {
         // head section
         include __DIR__ . "/views/includes/head.php";
