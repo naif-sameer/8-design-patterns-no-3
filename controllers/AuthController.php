@@ -29,19 +29,26 @@ class AuthController
     $email = $_POST['email'];
     $password = $_POST['password'];
 
+    $validator = ValidateHelper::validate(
+      ["email" => $email, "password" => $password],
+      ["email" => "required|email", "password" => "required|min:8|max:40"]
+    );
 
-    $checkedEmail = ValidateHelper::checkEmail($email);
-    $checkedPassword =  ValidateHelper::checkPassword($password);
-
-    if (!$checkedEmail && !$checkedPassword) {
-      // check if user is valid
+    if (is_array($validator)) {
+      Router::render('login', [
+        "email" => $email,
+        "password" => $password,
+        "error" => $validator
+      ]);
+    } else {
+      // check if user is valid 
       if (Auth::login($email, $password)) {
         Router::redirect("/dashboard");
       } else {
         Router::render('login', [
           "email" => $email,
           "password" => $password,
-          "error" => "Email or password is wrong"
+          "error" => "Email or password is wrong😩"
         ]);
       }
     }
@@ -49,7 +56,6 @@ class AuthController
 
   public static function logout()
   {
-    // SessionHelper::rest_session();
     session_destroy();
 
     Router::redirect('/login');

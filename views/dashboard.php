@@ -7,8 +7,8 @@ include 'includes/nav.php'; ?>
 <div class="container mx-auto py-8">
 
   <div class="pb-8 flex justify-between items-center">
-    <h2 class="text-4xl">Post list </h2>
-    <a class="border border-blue-500 text-blue-500 px-4 py-2 rounded" href="/post/add">Add new post</a>
+    <h2 class="text-4xl">Product list </h2>
+    <a class="border border-blue-500 text-blue-500 px-4 py-2 rounded" href="/post/add">Add new product</a>
   </div>
 
   <!-- table -->

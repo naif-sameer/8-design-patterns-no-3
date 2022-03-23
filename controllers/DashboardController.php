@@ -18,12 +18,8 @@ class DashboardController
 {
   public static function index()
   {
-    if (SessionHelper::get_auth()) {
-      $data = Post::getPosts();
-
-      // UtilHelper::log($data);
-
-      Router::render('dashboard', $data);
+    if (SessionHelper::getSession(SessionHelper::$AUTH)) {
+      Router::render('dashboard');
     } else {
       Router::redirect("/login");
     }

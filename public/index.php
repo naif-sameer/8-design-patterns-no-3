@@ -8,22 +8,13 @@ use app\Router;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-$router = new Router();
+Router::get('/', [HomeController::class, 'index']);
 
-$router->get('/', [HomeController::class, 'index']);
-$router->get('/post', [HomeController::class, 'show']);
-$router->post('/post/delete', [HomeController::class, 'delete']);
+Router::get('/login', [AuthController::class, 'login']);
+Router::post('/login', [AuthController::class, 'store']);
+Router::get('/logout', [AuthController::class, 'logout']);
 
-$router->get('/post/add', [HomeController::class, 'addPage']);
-$router->post('/post/add', [HomeController::class, 'add']);
 
-$router->get('/post/edit', [HomeController::class, 'editPage']);
-$router->post('/post/edit', [HomeController::class, 'edit']);
+Router::get('/dashboard', [DashboardController::class, 'index']);
 
-$router->get('/login', [AuthController::class, 'login']);
-$router->post('/login', [AuthController::class, 'register']);
-$router->get('/logout', [AuthController::class, 'logout']);
-
-$router->get('/dashboard', [DashboardController::class, 'index']);
-
-$router->resolve();
+Router::resolve();
